@@ -14,7 +14,7 @@ Place points in the real-world using the scene's depth data to visualize the sha
 
 <img src="https://user-images.githubusercontent.com/69623522/129967591-bb178416-2323-4e7c-a378-10169ab40fa5.PNG" width=250 height=500>
 
-<img src="https://user-images.githubusercontent.com/69623522/129967643-29c5113b-a464-41a7-8231-abb5313b9438.PNG" width=250 height=500?
+<img src="https://user-images.githubusercontent.com/69623522/129967643-29c5113b-a464-41a7-8231-abb5313b9438.PNG" width=250 height=500>
 
 ## Only supports Iphone w/ Lidar.
 
