@@ -10,7 +10,7 @@ Place points in the real-world using the scene's depth data to visualize the sha
  - Export/Delete saved scans
  - Increased Sampling rate
 
-![IMG_0414](https://user-images.githubusercontent.com/69623522/129967409-b2d9f3c2-7f9c-4524-a832-a415154a7dfd.PNG)
+<img src="https://user-images.githubusercontent.com/69623522/129967409-b2d9f3c2-7f9c-4524-a832-a415154a7dfd.PNG" width=250 height=500>
 
 ![IMG_0415](https://user-images.githubusercontent.com/69623522/129967591-bb178416-2323-4e7c-a378-10169ab40fa5.PNG)
 
