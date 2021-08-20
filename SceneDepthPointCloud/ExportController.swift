@@ -1,10 +1,7 @@
 //
 //  ExportController.swift
 //  SceneDepthPointCloud
-//
-//  Created by Ryan Phillips on 8/8/21.
-//  Copyright © 2021 Apple. All rights reserved.
-//
+
 import SwiftUI
 import Foundation
 

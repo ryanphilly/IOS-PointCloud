@@ -148,7 +148,7 @@ class SaveController : UIViewController, UIPickerViewDelegate, UIPickerViewDataS
             fileName: fileName!,
             beforeGlobalThread: [beforeSave, spinner.startAnimating],
             afterGlobalThread: [dismissModal, spinner.stopAnimating, mainController.afterSave],
-            onSaveErrorTask: onSaveError,
+            errorCallback: onSaveError,
             format: format)
     }
     

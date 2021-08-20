@@ -1,10 +1,6 @@
 //
 //  PLYFile.swift
 //  SceneDepthPointCloud
-//
-//  Created by Ryan Phillips on 8/2/21.
-//  Copyright © 2021 Apple. All rights reserved.
-//
 
 /*
  PLY File Scalar Byte Counts
@@ -23,18 +19,6 @@
  */
 
 import Foundation
-
-final class CPUParticle {
-    var position: simd_float3
-    var color: simd_float3
-    var confidence: Float
-    
-    init(position: simd_float3, color: simd_float3, confidence: Float) {
-        self.position = position
-        self.color = color * 255
-        self.confidence = confidence
-    }
-}
 
 final class PLYFile {
     static func write(fileName: String,
@@ -78,7 +62,7 @@ final class PLYFile {
     }
     
     private static func arrangeColorByte(color: simd_float1) -> UInt8 {
-        /// Convert Float32 o UIn8 tbis is possible because rgb colors have a max value of 255 which is 1 byte
+        /// Convert [0, 255] Float32 o UIn8
         let absColor = abs(Int16(color))
         return absColor <= 255 ? UInt8(absColor) : UInt8(255)
     }

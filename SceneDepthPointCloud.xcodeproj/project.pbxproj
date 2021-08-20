@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F6CDA9726CFAF5B0001D1E3 /* CpuParticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F6CDA9626CFAF5B0001D1E3 /* CpuParticle.swift */; };
 		0F852DA326B80435004B4DCF /* PLYFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F852DA226B80435004B4DCF /* PLYFile.swift */; };
 		0FA9255E26B926AE00012C25 /* XError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA9255D26B926AE00012C25 /* XError.swift */; };
 		0FA9256426BB5F6000012C25 /* SaveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FA9256326BB5F6000012C25 /* SaveController.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0F6CDA9626CFAF5B0001D1E3 /* CpuParticle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CpuParticle.swift; sourceTree = "<group>"; };
 		0F852DA226B80435004B4DCF /* PLYFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PLYFile.swift; sourceTree = "<group>"; };
 		0FA9255D26B926AE00012C25 /* XError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XError.swift; sourceTree = "<group>"; };
 		0FA9256326BB5F6000012C25 /* SaveController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveController.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				0FA9255D26B926AE00012C25 /* XError.swift */,
 				0FA9256326BB5F6000012C25 /* SaveController.swift */,
 				0FFF3FED26C0A94400BBD761 /* ExportController.swift */,
+				0F6CDA9626CFAF5B0001D1E3 /* CpuParticle.swift */,
 			);
 			path = SceneDepthPointCloud;
 			sourceTree = "<group>";
@@ -187,6 +190,7 @@
 			files = (
 				0FFF3FEE26C0A94400BBD761 /* ExportController.swift in Sources */,
 				0F852DA326B80435004B4DCF /* PLYFile.swift in Sources */,
+				0F6CDA9726CFAF5B0001D1E3 /* CpuParticle.swift in Sources */,
 				0FA9255E26B926AE00012C25 /* XError.swift in Sources */,
 				E73DD13324636FEF00D77039 /* Shaders.metal in Sources */,
 				E7B7223D24809D1E002E43E8 /* Helpers.swift in Sources */,

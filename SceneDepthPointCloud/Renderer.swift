@@ -1,6 +1,6 @@
-/*
- Added functionality added by @ryanphilly
-*/
+//
+//  Renderer.swift
+//  SceneDepthPointCloud
 
 import Metal
 import MetalKit
@@ -19,12 +19,13 @@ final class Renderer {
     // Maximum number of points we store in the point cloud
     private let maxPoints = 15_000_000
     // Number of sample points on the grid
-    var numGridPoints = 3_000
+    var numGridPoints = 2_000
     // Particle's size in pixels
     private let particleSize: Float = 8
-    // We only use landscape orientation in this app
+    // We only use portrait orientation in this app
     private let orientation = UIInterfaceOrientation.portrait
     // Camera's threshold values for detecting when the camera moves so that we can accumulate the points
+    // set to 0 for continous sampling
     private let cameraRotationThreshold = cos(0 * .degreesToRadian)
     private let cameraTranslationThreshold: Float = pow(0.00, 2)   // (meter-squared)
     // The max number of command buffers in flight
@@ -92,13 +93,7 @@ final class Renderer {
     private lazy var lastCameraTransform = sampleFrame.camera.transform
     
     // interfaces
-    var confidenceThreshold = 2 /*{
-        didSet {
-            // apply the change for the shader
-            print(confidenceThreshold)
-            pointCloudUniforms.confidenceThreshold = Int32(confidenceThreshold)
-        }
-    }*/
+    var confidenceThreshold = 2
     
     var rgbOn: Bool = false {
         didSet {
@@ -248,10 +243,9 @@ final class Renderer {
         
         commandBuffer.addCompletedHandler { buffer in
             retainingTextures.removeAll()
-            
+            // copy gpu point buffer to cpu
             var i = self.cpuParticlesBuffer.count
             while (i < self.maxPoints && self.particlesBuffer[i].position != simd_float3(0.0,0.0,0.0)) {
-                //  maybe only save high conf particles to cpu???
                 let position = self.particlesBuffer[i].position
                 let color = self.particlesBuffer[i].color
                 let confidence = self.particlesBuffer[i].confidence
@@ -296,14 +290,14 @@ extension Renderer {
     func saveAsPlyFile(fileName: String,
                        beforeGlobalThread: [() -> Void],
                        afterGlobalThread: [() -> Void],
-                       onSaveErrorTask: (XError) -> Void,
+                       errorCallback: (XError) -> Void,
                        format: String) {
         
         guard !isSavingFile else {
-            return onSaveErrorTask(XError.alreadySavingFile)
+            return errorCallback(XError.alreadySavingFile)
         }
         guard !cpuParticlesBuffer.isEmpty else {
-            return onSaveErrorTask(XError.noScanDone)
+            return errorCallback(XError.noScanDone)
         }
         
         isSavingFile = true
