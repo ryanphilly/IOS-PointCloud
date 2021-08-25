@@ -1,6 +1,6 @@
 # Iphone Point Cloud Generator
 
-This was ceated to make the wwdc20 sample into a usable base app.
+This was ceated to make the wwdc20 sample into a usable utility app.
 
 Place points in the real-world using the scene's depth data to visualize the shape of the physical environment.
 
