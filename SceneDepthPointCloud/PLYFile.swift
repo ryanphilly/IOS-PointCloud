@@ -22,7 +22,7 @@ import Foundation
 
 final class PLYFile {
     static func write(fileName: String,
-                      cpuParticlesBuffer: [CPUParticle],
+                      cpuParticlesBuffer: inout [CPUParticle],
                       highConfCount: Int,
                       format: String) throws -> URL {
         
@@ -53,136 +53,107 @@ final class PLYFile {
         try headersString.write(to: plyFile, atomically: true, encoding: .ascii)
         
         if format == "ascii" {
-            try writeAscii(file: plyFile, cpuParticlesBuffer: cpuParticlesBuffer)
+            try writeAscii(file: plyFile, cpuParticlesBuffer: &cpuParticlesBuffer)
         } else {
-            try writeBinary(file: plyFile, format: format, cpuParticlesBuffer: cpuParticlesBuffer)
+            try writeBinary(file: plyFile, format: format, cpuParticlesBuffer: &cpuParticlesBuffer)
         }
         
         return plyFile
     }
     
     private static func arrangeColorByte(color: simd_float1) -> UInt8 {
-        /// Convert [0, 255] Float32 o UIn8
+        /// Convert [0, 255] Float32 to UInt8
         let absColor = abs(Int16(color))
         return absColor <= 255 ? UInt8(absColor) : UInt8(255)
     }
     
-    private static func writeBinary(file: URL, format: String, cpuParticlesBuffer: [CPUParticle]) throws -> Void {
+    private static func writeBinary(file: URL, format: String, cpuParticlesBuffer: inout [CPUParticle]) throws -> Void {
         let fileHandle = try! FileHandle(forWritingTo: file)
         fileHandle.seekToEndOfFile()
+        var data = Data()
+        
         for particle in cpuParticlesBuffer {
             if particle.confidence != 2 { continue }
             
             if format == "binary_little_endian" {
                 var x = particle.position.x.bitPattern.littleEndian
-                let leX = withUnsafePointer(to: &x) {
+                data.append(withUnsafePointer(to: &x) {
                     Data(buffer: UnsafeBufferPointer(start: $0, count: 1))
-                }
-                fileHandle.write(leX)
-                fileHandle.seekToEndOfFile()
+                })
                 
                 var y = particle.position.y.bitPattern.littleEndian
-                let leY = withUnsafePointer(to: &y) {
+                data.append(withUnsafePointer(to: &y) {
                     Data(buffer: UnsafeBufferPointer(start: $0, count: 1))
-                }
-                fileHandle.write(leY)
-                fileHandle.seekToEndOfFile()
+                })
                 
                 var z = particle.position.z.bitPattern.littleEndian
-                let leZ = withUnsafePointer(to: &z) {
+                data.append(withUnsafePointer(to: &z) {
                     Data(buffer: UnsafeBufferPointer(start: $0, count: 1))
-                }
-                fileHandle.write(leZ)
-                fileHandle.seekToEndOfFile()
+                })
                 
                 let colors = particle.color
-                
                 var red = arrangeColorByte(color: colors.x).littleEndian
-                let leRed = withUnsafePointer(to: &red) {
+                data.append(withUnsafePointer(to: &red) {
                     Data(buffer: UnsafeBufferPointer(start: $0, count: 1))
-                }
-                fileHandle.write(leRed)
-                fileHandle.seekToEndOfFile()
+                })
                 
                 var green = arrangeColorByte(color: colors.y).littleEndian
-                let leGreen = withUnsafePointer(to: &green) {
+                data.append(withUnsafePointer(to: &green) {
                     Data(buffer: UnsafeBufferPointer(start: $0, count: 1))
-                }
-                fileHandle.write(leGreen)
-                fileHandle.seekToEndOfFile()
+                })
                 
                 var blue = arrangeColorByte(color: colors.z).littleEndian
-                let leBlue = withUnsafePointer(to: &blue) {
+                data.append(withUnsafePointer(to: &blue) {
                     Data(buffer: UnsafeBufferPointer(start: $0, count: 1))
-                }
-                fileHandle.write(leBlue)
-                fileHandle.seekToEndOfFile()
+                })
                 
                 var alpha = UInt8(255).littleEndian
-                let leAlpha = withUnsafePointer(to: &alpha) {
+                data.append(withUnsafePointer(to: &alpha) {
                     Data(buffer: UnsafeBufferPointer(start: $0, count: 1))
-                }
-                fileHandle.write(leAlpha)
-                fileHandle.seekToEndOfFile()
-
+                })
             } else {
                 var x = particle.position.x.bitPattern.bigEndian
-                let leX = withUnsafePointer(to: &x) {
+                data.append(withUnsafePointer(to: &x) {
                     Data(buffer: UnsafeBufferPointer(start: $0, count: 1))
-                }
-                fileHandle.write(leX)
-                fileHandle.seekToEndOfFile()
+                })
                 
                 var y = particle.position.y.bitPattern.bigEndian
-                let leY = withUnsafePointer(to: &y) {
+                data.append(withUnsafePointer(to: &y) {
                     Data(buffer: UnsafeBufferPointer(start: $0, count: 1))
-                }
-                fileHandle.write(leY)
-                fileHandle.seekToEndOfFile()
+                })
                 
                 var z = particle.position.z.bitPattern.bigEndian
-                let leZ = withUnsafePointer(to: &z) {
+                data.append(withUnsafePointer(to: &z) {
                     Data(buffer: UnsafeBufferPointer(start: $0, count: 1))
-                }
-                fileHandle.write(leZ)
-                fileHandle.seekToEndOfFile()
+                })
                 
                 let colors = particle.color
-                
                 var red = arrangeColorByte(color: colors.x).bigEndian
-                let leRed = withUnsafePointer(to: &red) {
+                data.append(withUnsafePointer(to: &red) {
                     Data(buffer: UnsafeBufferPointer(start: $0, count: 1))
-                }
-                fileHandle.write(leRed)
-                fileHandle.seekToEndOfFile()
+                })
                 
                 var green = arrangeColorByte(color: colors.y).bigEndian
-                let leGreen = withUnsafePointer(to: &green) {
+                data.append(withUnsafePointer(to: &green) {
                     Data(buffer: UnsafeBufferPointer(start: $0, count: 1))
-                }
-                fileHandle.write(leGreen)
-                fileHandle.seekToEndOfFile()
+                })
                 
                 var blue = arrangeColorByte(color: colors.z).bigEndian
-                let leBlue = withUnsafePointer(to: &blue) {
+                data.append(withUnsafePointer(to: &blue) {
                     Data(buffer: UnsafeBufferPointer(start: $0, count: 1))
-                }
-                fileHandle.write(leBlue)
-                fileHandle.seekToEndOfFile()
+                })
                 
                 var alpha = UInt8(255).bigEndian
-                let leAlpha = withUnsafePointer(to: &alpha) {
+                data.append(withUnsafePointer(to: &alpha) {
                     Data(buffer: UnsafeBufferPointer(start: $0, count: 1))
-                }
-                fileHandle.write(leAlpha)
-                fileHandle.seekToEndOfFile()
+                })
             }
         }
+        fileHandle.write(data)
         fileHandle.closeFile()
-        
     }
     
-    private static func writeAscii(file: URL, cpuParticlesBuffer: [CPUParticle]) throws  -> Void {
+    private static func writeAscii(file: URL, cpuParticlesBuffer: inout [CPUParticle]) throws  -> Void {
         var vertexStrings = ""
         for particle in cpuParticlesBuffer {
             if particle.confidence != 2 { continue }

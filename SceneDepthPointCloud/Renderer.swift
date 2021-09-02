@@ -300,15 +300,15 @@ extension Renderer {
             return errorCallback(XError.noScanDone)
         }
         
-        isSavingFile = true
         DispatchQueue.global().async {
+            self.isSavingFile = true
             DispatchQueue.main.async {
                 for task in beforeGlobalThread { task() }
             }
 
             do { self.savedCloudURLs.append(try PLYFile.write(
                     fileName: fileName,
-                    cpuParticlesBuffer: self.cpuParticlesBuffer,
+                    cpuParticlesBuffer: &self.cpuParticlesBuffer,
                     highConfCount: self.highConfCount,
                     format: format)) } catch {
                 self.savingError = XError.savingFailed
@@ -317,8 +317,8 @@ extension Renderer {
             DispatchQueue.main.async {
                 for task in afterGlobalThread { task() }
             }
+            self.isSavingFile = false
         }
-        isSavingFile = false
     }
     
     func clearParticles() {
