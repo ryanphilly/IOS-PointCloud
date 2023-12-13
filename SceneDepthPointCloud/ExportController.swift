@@ -50,7 +50,7 @@ class ExportController : UIViewController, UIPickerViewDelegate, UIPickerViewDat
         view.addSubview(exportPicker)
         
         exportButton.tintColor = .green
-        exportButton.setTitle("Export Selectted Scan", for: .normal)
+        exportButton.setTitle("Export Selected Scan", for: .normal)
         exportButton.setImage(.init(systemName: "square.and.arrow.up"), for: .normal)
         exportButton.translatesAutoresizingMaskIntoConstraints = false
         exportButton.addTarget(self, action: #selector(executeExport), for: .touchUpInside)
